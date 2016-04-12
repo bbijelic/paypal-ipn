@@ -8,8 +8,22 @@ package com.github.bbijelic.paypal.ipn.logging;
 public class LoggingHelper {
 
 	/**
-	 * MDC Transaction ID key
+	 * MDC.
+	 *
+	 * @author Bojan Bijelic
 	 */
-	public final static String MDC_TRANSACTION_ID_KEY = "txid";
-	
+	public class MDC {
+
+		/**
+		 * MDC Transaction ID key
+		 */
+		public final static String TRANSACTION_ID_KEY = "txid";
+
+		/**
+		 * Request ID key
+		 */
+		public final static String REQUEST_ID_KEY = "requestid";
+
+	}
+
 }

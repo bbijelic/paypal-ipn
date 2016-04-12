@@ -15,6 +15,7 @@ CREATE TABLE paypal_notification (
 id					int not null auto_increment,
 status				varchar(8) not null COMMENT 'Notification status',
 transaction_id		varchar(20) not null COMMENT 'Unique transaction id',
+transaction_type	varchar(25) not null COMMENT 'Transaction type',
 notify_version		varchar(10) not null COMMENT 'Notification version',
 received_at			timestamp not null default current_timestamp COMMENT 'Timestamp of when notification was received',
 completed_at		timestamp COMMENT 'When was notification validation completed',

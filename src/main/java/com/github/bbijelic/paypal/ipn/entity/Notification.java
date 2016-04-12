@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -98,7 +100,7 @@ public class Notification {
 	/**
 	 * Raw message parameters
 	 */
-	@Column(name = "raw_parameters")
+	@Column(name = "raw_parameters", nullable = false)
 	private String rawParameters;
 
 	/**
@@ -122,6 +124,7 @@ public class Notification {
 	/**
 	 * Message status
 	 */
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private NotificationStatus status;
 
@@ -192,11 +195,35 @@ public class Notification {
 		this.notificationVersion = notificationVersion;
 	}
 
+	/**
+	 * Transaction type.
+	 */
+	@Column(name = "transaction_type")
+	private String transactionType;
+
+	/**
+	 * Transaction type getter.
+	 * 
+	 * @return the transaction type
+	 */
+	public String getTransactionType() {
+		return transactionType;
+	}
+
+	/**
+	 * Transaction type setter.
+	 * 
+	 * @param transactionType
+	 */
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+
 	@Override
 	public String toString() {
 		return "Notification [id=" + id + ", receivedAt=" + receivedAt + ", transactionId=" + transactionId
 				+ ", rawParameters=" + rawParameters + ", status=" + status + ", completedAt=" + completedAt
-				+ ", notificationVersion=" + notificationVersion + "]";
+				+ ", notificationVersion=" + notificationVersion + ", transactionType=" + transactionType + "]";
 	}
 
 }
