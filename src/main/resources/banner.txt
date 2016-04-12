@@ -1,11 +1,8 @@
 
-ooooooooo.                         ooooooooo.             oooo       ooooo ooooooooo.   ooooo      ooo 
-`888   `Y88.                       `888   `Y88.           `888       `888' `888   `Y88. `888b.     `8' 
- 888   .d88'  .oooo.   oooo    ooo  888   .d88'  .oooo.    888        888   888   .d88'  8 `88b.    8  
- 888ooo88P'  `P  )88b   `88.  .8'   888ooo88P'  `P  )88b   888        888   888ooo88P'   8   `88b.  8  
- 888          .oP"888    `88..8'    888          .oP"888   888        888   888          8     `88b.8  
- 888         d8(  888     `888'     888         d8(  888   888        888   888          8       `888  
-o888o        `Y888""8o     .8'     o888o        `Y888""8o o888o      o888o o888o        o8o        `8  
-                       .o..P'                                                                          
-                       `Y8P'                                                                           
-                                                                                                       
+                                                          o888          o88                         
+ooooooooo     ooooooo oooo   oooo ooooooooo     ooooooo    888          oooo ooooooooo  oo oooooo   
+ 888    888   ooooo888 888   888   888    888   ooooo888   888 ooooooooo 888  888    888 888   888  
+ 888    888 888    888  888 888    888    888 888    888   888           888  888    888 888   888  
+ 888ooo88    88ooo88 8o   8888     888ooo88    88ooo88 8o o888o         o888o 888ooo88  o888o o888o 
+o888                   o8o888     o888                                       o888                   
+

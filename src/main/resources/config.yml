@@ -1,7 +1,47 @@
+database:
+  # the name of your JDBC driver
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username
+  user: paypal_ipn
+
+  # the password
+  password: paypal_ipn
+
+  # the JDBC URL
+  url: jdbc:mysql://localhost/paypal_ipn
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.MySQLDialect
+    hibernate.generate_statistics: false
+    show_sql: true
+    format_sql: true
+    use_sql_comments: true
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* Paypal IPN Connection Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
 logging:
   level: INFO
   
   loggers:
+    org.hibernate: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
     com.github.bbijelic.paypal.ipn: TRACE
   
   appenders:
@@ -9,4 +49,4 @@ logging:
       threshold: ALL
       timeZone: UTC
       target: stdout
-      logFormat: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n"
+      logFormat: "%d{HH:mm:ss.SSS} [%thread] %-5level [%X{txid}] %logger{35} - %msg%n"
