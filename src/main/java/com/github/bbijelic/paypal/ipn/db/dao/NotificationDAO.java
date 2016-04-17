@@ -2,11 +2,15 @@ package com.github.bbijelic.paypal.ipn.db.dao;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.bbijelic.paypal.ipn.entity.Notification;
+import com.github.bbijelic.paypal.ipn.entity.NotificationStatus;
 
 import io.dropwizard.hibernate.AbstractDAO;
 
@@ -40,16 +44,16 @@ public class NotificationDAO extends AbstractDAO<Notification> {
 	public Notification findById(Long id) {
 		return get(id);
 	}
-
+	
 	/**
-	 * Persists notification in database.
+	 * Creates notification in database.
 	 * 
 	 * @param notification
 	 */
 	public void create(Notification notification) {
 		persist(notification);
 	}
-
+	
 	/**
 	 * Lists all notification in database.
 	 * 
@@ -57,5 +61,17 @@ public class NotificationDAO extends AbstractDAO<Notification> {
 	 */
 	public List<Notification> findAll() {
 		return list(this.currentSession().createCriteria(Notification.class));
+	}
+
+	/**
+	 * Lists all notifications from database filtered by status
+	 * 
+	 * @param status
+	 * @return the notification list
+	 */
+	public List<Notification> findByStatus(NotificationStatus status) {
+		Criteria statusFilterCriteria = currentSession().createCriteria(Notification.class);
+		statusFilterCriteria.add(Restrictions.eq("status", status));
+		return list(statusFilterCriteria);
 	}
 }

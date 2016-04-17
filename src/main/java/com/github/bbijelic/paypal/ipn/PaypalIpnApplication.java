@@ -1,14 +1,21 @@
 package com.github.bbijelic.paypal.ipn;
 
+import org.apache.http.client.HttpClient;
+
 import com.codahale.metrics.health.HealthCheck;
 import com.github.bbijelic.paypal.ipn.bundle.DatabaseBundle;
 import com.github.bbijelic.paypal.ipn.config.ServiceConfiguration;
 import com.github.bbijelic.paypal.ipn.db.dao.NotificationDAO;
 import com.github.bbijelic.paypal.ipn.entity.Notification;
 import com.github.bbijelic.paypal.ipn.health.DefaultHealthCheck;
+import com.github.bbijelic.paypal.ipn.managed.verify.VerificationHandler;
+import com.github.bbijelic.paypal.ipn.managed.verify.VerificationManager;
 import com.github.bbijelic.paypal.ipn.resource.PaypalNotificationResource;
 
 import io.dropwizard.Application;
+import io.dropwizard.client.HttpClientBuilder;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
@@ -51,6 +58,11 @@ public class PaypalIpnApplication extends Application<ServiceConfiguration> {
 	public void initialize(Bootstrap<ServiceConfiguration> bootstrap) {
 		// Register database bundle
 		bootstrap.addBundle(databaseBundle);
+
+		// Enable variable substitution with environment variables
+		bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(
+				bootstrap.getConfigurationSourceProvider(), new EnvironmentVariableSubstitutor()));
+
 	}
 
 	@Override
@@ -58,6 +70,20 @@ public class PaypalIpnApplication extends Application<ServiceConfiguration> {
 
 		// Notification DAO instance
 		NotificationDAO notificationDAO = new NotificationDAO(databaseBundle.getSessionFactory());
+
+		// Paypal http client
+		final HttpClient httpClient = new HttpClientBuilder(environment)
+				.using(configuration.getManagerConfiguration().getVerificationManagerConfiguration().getPaypalClient())
+				.build(null);
+
+		// Verification handler and manager
+		VerificationHandler verificationHandler = new VerificationHandler(notificationDAO,
+				databaseBundle.getSessionFactory(), httpClient,
+				configuration.getManagerConfiguration().getVerificationManagerConfiguration());
+		VerificationManager verificationManager = new VerificationManager(
+				configuration.getManagerConfiguration().getVerificationManagerConfiguration(), verificationHandler);
+
+		environment.lifecycle().manage(verificationManager);
 
 		// Register IPN message handler resource
 		environment.jersey().register(new PaypalNotificationResource(notificationDAO));

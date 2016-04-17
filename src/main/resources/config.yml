@@ -3,13 +3,13 @@ database:
   driverClass: com.mysql.jdbc.Driver
 
   # the username
-  user: paypal_ipn
+  user: ${MYSQL_USERNAME}
 
   # the password
-  password: paypal_ipn
+  password: ${MYSQL_PASSWORD}
 
   # the JDBC URL
-  url: jdbc:mysql://localhost/paypal_ipn
+  url: jdbc:mysql://${MYSQL_HOST:-default localhost}:${MYSQL_PORT:-default 3306}/${MYSQL_DBNAME}
 
   # any properties specific to your JDBC driver:
   properties:
@@ -24,7 +24,7 @@ database:
   maxWaitForConnection: 1s
 
   # the SQL query to run when validating a connection's liveness
-  validationQuery: "/* Paypal IPN Connection Health Check */ SELECT 1"
+  validationQuery: "SELECT 1"
 
   # the minimum number of connections to keep open
   minSize: 8
@@ -45,8 +45,29 @@ logging:
     com.github.bbijelic.paypal.ipn: TRACE
   
   appenders:
-    - type: console
+    - type: file
+      currentLogFilename: /app/logs/paypal-ipn.log
       threshold: ALL
+      archive: true
+      archivedLogFilenamePattern: /app/logs/paypal-ipn-%d.log
+      archivedFileCount: 5
       timeZone: UTC
-      target: stdout
       logFormat: "%d{HH:mm:ss.SSS} [%thread] %-5level [%X{txid}] %logger{35} - %msg%n"
+      
+# Manager configuration
+manager:
+
+  # Verification manager
+  verification:
+    interval: 10
+    initialDelay: 0
+    verificationUrl: https://www.sandbox.paypal.com/cgi-bin/webscr
+    paypalClient:
+      timeout: 5000ms
+      connectionTimeout: 1000ms
+      timeToLive: 1 hour
+      cookiesEnabled: false
+      maxConnections: 1024
+      maxConnectionsPerRoute: 1024
+      keepAlive: 0s
+    

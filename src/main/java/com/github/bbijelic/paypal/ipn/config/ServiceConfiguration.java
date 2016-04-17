@@ -32,4 +32,24 @@ public class ServiceConfiguration extends Configuration {
 		return database;
 	}
 
+	/**
+	 * Manager configuration
+	 */
+	@Valid
+	@JsonProperty("manager")
+	private ManagerConfiguration managerConfiguration;
+
+	public ManagerConfiguration getManagerConfiguration() {
+		return managerConfiguration;
+	}
+
+	public void setManagerConfiguration(ManagerConfiguration managerConfiguration) {
+		this.managerConfiguration = managerConfiguration;
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceConfiguration [database=" + database + ", managerConfiguration=" + managerConfiguration + "]";
+	}
+
 }
